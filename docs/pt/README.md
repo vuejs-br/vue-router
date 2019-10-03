@@ -1,18 +1,18 @@
-# Introduction
+# Introdução
 
-:::tip VERSION NOTE
-For TypeScript users, `vue-router@3.0+` requires `vue@2.5+`, and vice versa.
+:::tip NOTAS DE VERSÃO
+Para usuários TypeScript, `vue-router@3.0+` requer `vue@2.5+`, e vice-versa.
 :::
 
-Vue Router is the official router for [Vue.js](http://vuejs.org). It deeply integrates with Vue.js core to make building Single Page Applications with Vue.js a breeze. Features include:
+Vue Router é o roteador oficial do [Vue.js](http://br.vuejs.org). Ele se integra profundamente com a biblioteca base do Vue.js para tornar a construção de Single Page Applications mais fácil. Os recursos incluem:
 
-- Nested route/view mapping
-- Modular, component-based router configuration
-- Route params, query, wildcards
-- View transition effects powered by Vue.js' transition system
-- Fine-grained navigation control
-- Links with automatic active CSS classes
-- HTML5 history mode or hash mode, with auto-fallback in IE9
-- Customizable Scroll Behavior
+- Rotas aninhadas e mapeamento de _views_
+- Configuração de rotas modular e baseada em componentes
+- Parâmetros em rotas, _queries_, _wildcards_
+- Efeitos de transição de _views_ através do sistema de transições Vue.js
+- Refinado controle de navegação
+- Classes CSS automáticas para _links_ ativos
+- Modo de histórico HTML5 ou por _hash_, com _fallback_ para IE9
+- Comportamento de rolagem personalizável
 
-[Get started](./guide/) or play with the [examples](https://github.com/vuejs/vue-router/tree/dev/examples) (see [`README.md`](https://github.com/vuejs/vue-router/) to run them).
+[Comece estudando o guia](./guide/) ou brinque com os [exemplos de código](https://github.com/vuejs/vue-router/tree/dev/examples) (veja o [`README.md`](https://github.com/vuejs/vue-router/) para executá-los).
