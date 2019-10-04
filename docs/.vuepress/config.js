@@ -33,7 +33,7 @@ module.exports = {
     '/pt/': {
         lang: 'pt',
         title: 'Vue Router',
-        description: 'O router oficial para Vue.Js'
+        description: 'O router oficial para Vue.js'
     }
   },
   serviceWorker: true,
@@ -349,7 +349,7 @@ module.exports = {
       '/pt/': {
           label: 'Português',
           selectText: 'Idiomas',
-          editLinkText: 'Edite essa página no GitHub',
+          editLinkText: 'Edite esta página no GitHub',
           nav: [
               {
                   text: 'Guia',
@@ -360,7 +360,7 @@ module.exports = {
                   link: '/pt/api/'
               },
               {
-                  text: 'Notas da Versão',
+                  text: 'Notas de Versão',
                   link: 'https://github.com/vuejs/vue-router/releases'
               }
           ],
