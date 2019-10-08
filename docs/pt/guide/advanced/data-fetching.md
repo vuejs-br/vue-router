@@ -1,4 +1,4 @@
-# Data Fetching
+# Buscando Dados
 
 Sometimes you need to fetch data from the server when a route is activated. For example, before rendering a user profile, you need to fetch the user's data from the server. We can achieve this in two different ways:
 
