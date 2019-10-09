@@ -70,10 +70,9 @@ export default {
 }
 ```
 
-## Fetching Before Navigation
+## Buscando Antes da Navegação
 
-With this approach we fetch the data before actually navigating to the new
-route. We can perform the data fetching in the `beforeRouteEnter` guard in the incoming component, and only call `next` when the fetch is complete:
+Com esta abordagem, buscamos os dados antes da navegação para a nova rota. Podemos realizar a busca dos dados no protetor `beforeRouteEnter` do componente recebido, e só chamar `next` quando a busca estiver completa:
 
 ``` js
 export default {
@@ -88,8 +87,8 @@ export default {
       next(vm => vm.setData(err, post))
     })
   },
-  // when route changes and this component is already rendered,
-  // the logic will be slightly different.
+  // quando a rota mudar e este componente já estiver renderizado,
+  // a lógica será ligeiramente diferente.
   beforeRouteUpdate (to, from, next) {
     this.post = null
     getPost(to.params.id, (err, post) => {
@@ -109,4 +108,4 @@ export default {
 }
 ```
 
-The user will stay on the previous view while the resource is being fetched for the incoming view. It is therefore recommended to display a progress bar or some kind of indicator while the data is being fetched. If the data fetch fails, it's also necessary to display some kind of global warning message.
+O usuário permanecerá na camada de visualização anterior enquanto os recursos estão sendo buscados pela próxima camada de visualização. Logo, é recomendado mostrar uma barra de progresso ou algum tido de indicador enquanto os dados estão sendo buscados. Se a busca dos dados falhar, também é necessário mostrar algum tido de mensagem de alerta global.
