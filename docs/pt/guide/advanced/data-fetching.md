@@ -2,7 +2,7 @@
 
 Em alguns casos, você precisa buscar dados do servidor quando uma rota é ativada. Por exemplo, antes de renderizar um perfil de usuário, você precisar buscar os dados daquele usuário no servidor. Podemos conseguir isso de duas maneiras diferentes:
 
-- **Fetching After Navigation**: perform the navigation first, and fetch data in the incoming component's lifecycle hook. Display a loading state while data is being fetched.
+- **Buscando Após a Navegação**: realiza a navegação primeiro, e busca os dados no próximo gatilho de ciclo de vida do componente. Mostrar um estado de carregamento enquanto os dados estiverem sendo buscados.
 
 - **Fetching Before Navigation**: Fetch data before navigation in the route enter guard, and perform the navigation after data has been fetched.
 
