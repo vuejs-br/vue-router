@@ -4,7 +4,7 @@ Em alguns casos, você precisa buscar dados do servidor quando uma rota é ativa
 
 - **Buscando Após a Navegação**: realiza a navegação primeiro, e busca os dados no próximo gatilho de ciclo de vida do componente. Mostrar um estado de carregamento enquanto os dados estiverem sendo buscados.
 
-- **Fetching Before Navigation**: Fetch data before navigation in the route enter guard, and perform the navigation after data has been fetched.
+- **Buscando Antes da Navegação**:  Busca os dados antes da navegação no protetor de navegação, e realiza a navegação após os dados terem sido buscados.
 
 Technically, both are valid choices - it ultimately depends on the user experience you are aiming for.
 
