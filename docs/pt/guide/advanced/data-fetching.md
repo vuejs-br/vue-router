@@ -8,11 +8,11 @@ Em alguns casos, você precisa buscar dados do servidor quando uma rota é ativa
 
 Tecnicamente, ambas as escolhas são válidas - fundamentalmente, depende da experiência de usuário que você está almejando.
 
-## Fetching After Navigation
+## Buscando Após da Navegação
 
-When using this approach, we navigate and render the incoming component immediately, and fetch data in the component's `created` hook. It gives us the opportunity to display a loading state while the data is being fetched over the network, and we can also handle loading differently for each view.
+Quando utilizamos esta abordagem, navegamos e renderizamos o componente recebido imediatamente, e buscamos os dados no gatilhos `created` do componente. Isso nos dá a oportunidade de mostrar um estado de carregamento enquanto os dados estão sendo buscados através da rede, e podemos também, lidar com o carregamento de forma diferente para cada camada visual.
 
-Let's assume we have a `Post` component that needs to fetch the data for a post based on `$route.params.id`:
+Vamos supor que temos um componente `Post`, que precisa buscar os dados de uma postagem baseado em `$route.params.id`:
 
 ``` html
 <template>
@@ -43,19 +43,20 @@ export default {
     }
   },
   created () {
-    // fetch the data when the view is created and the data is
-    // already being observed
+    // busca os dados quando a camada de visualização é criada
+    // e os dados já estão sendo observados
     this.fetchData()
   },
   watch: {
-    // call again the method if the route changes
+    // chama novamente o método se a rota mudar
     '$route': 'fetchData'
   },
   methods: {
     fetchData () {
       this.error = this.post = null
       this.loading = true
-      // replace `getPost` with your data fetching util / API wrapper
+      // substitui `getPost` pelo seu utilitário de busca de dados
+      // / encapsulamento de API
       getPost(this.$route.params.id, (err, post) => {
         this.loading = false
         if (err) {
