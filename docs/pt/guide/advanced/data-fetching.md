@@ -6,7 +6,7 @@ Em alguns casos, você precisa buscar dados do servidor quando uma rota é ativa
 
 - **Buscando Antes da Navegação**:  Busca os dados antes da navegação no protetor de navegação, e realiza a navegação após os dados terem sido buscados.
 
-Technically, both are valid choices - it ultimately depends on the user experience you are aiming for.
+Tecnicamente, ambas as escolhas são válidas - fundamentalmente, depende da experiência de usuário que você está almejando.
 
 ## Fetching After Navigation
 
