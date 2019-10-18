@@ -1,6 +1,6 @@
-# Dynamic Route Matching
+# Correspondência Dinâmica de Rotas
 
-Very often we will need to map routes with the given pattern to the same component. For example we may have a `User` component which should be rendered for all users but with different user IDs. In `vue-router` we can use a dynamic segment in the path to achieve that:
+Muitas vezes, precisaremos mapear rotas com determinado padrão para o mesmo componente. Por exemplo, podemos ter um componente `User` que deve ser renderizado para todos os usuários, porém com _IDs_ de usuário diferentes. No `vue-router` podemos usar um segmento dinâmico no caminho para atingir isso:
 
 ```js
 const User = {
@@ -9,15 +9,16 @@ const User = {
 
 const router = new VueRouter({
   routes: [
-    // dynamic segments start with a colon
+    // segmentos dinâmicos iniciam com dois-pontos
     { path: '/user/:id', component: User }
   ]
 })
 ```
 
-Now URLs like `/user/foo` and `/user/bar` will both map to the same route.
+Agora URL's como `/user/foo` e `/user/bar` irão ambas mapear para a mesma rota.
 
-A dynamic segment is denoted by a colon `:`. When a route is matched, the value of the dynamic segments will be exposed as `this.$route.params` in every component. Therefore, we can render the current user ID by updating `User`'s template to this:
+Um segmento dinâmico é denotado por dois-pontos `:`. Quando uma rota é correspondida, os valores dos segmentos dinâmicos serão expostos como `this.$route.params` em cada componente.
+Portanto, podemos renderizar o ID do usuário atual atualizando o _template_ de `User`'s para isso:
 
 ```js
 const User = {
@@ -25,80 +26,81 @@ const User = {
 }
 ```
 
-You can check out a live example [here](https://jsfiddle.net/yyx990803/4xfa2f19/).
+Você pode ver o exemplo ao vivo [aqui](https://jsfiddle.net/yyx990803/4xfa2f19/).
 
-You can have multiple dynamic segments in the same route, and they will map to corresponding fields on `$route.params`. Examples:
+Você pode ter múltiplos segmentos dinâmicos na mesma rota, e eles serão mapeados para os campos correspondentes em `$route.params`. Exemplos:
 
-| pattern                       | matched path        | \$route.params                         |
-| ----------------------------- | ------------------- | -------------------------------------- |
-| /user/:username               | /user/evan          | `{ username: 'evan' }`                 |
-| /user/:username/post/:post_id | /user/evan/post/123 | `{ username: 'evan', post_id: '123' }` |
+| padrão                        | caminho correspondido | \$route.params                         |
+| ----------------------------- | --------------------- | -------------------------------------- |
+| /user/:username               | /user/evan            | `{ username: 'evan' }`                 |
+| /user/:username/post/:post_id | /user/evan/post/123   | `{ username: 'evan', post_id: '123' }` |
 
-In addition to `$route.params`, the `$route` object also exposes other useful information such as `$route.query` (if there is a query in the URL), `$route.hash`, etc. You can check out the full details in the [API Reference](../../api/#the-route-object).
+Além do `$route.params`, o objeto `$route` também expõe outras informações úteis como `$route.query` (se existir uma consulta na URL), `$route.hash` e etc. Você pode verificar todos os detalhes na [Referência da API](../../api/#the-route-object).
 
-## Reacting to Params Changes
+## Reagindo à Mudança de Parâmetros
 
-One thing to note when using routes with params is that when the user navigates from `/user/foo` to `/user/bar`, **the same component instance will be reused**. Since both routes render the same component, this is more efficient than destroying the old instance and then creating a new one. **However, this also means that the lifecycle hooks of the component will not be called**.
+Uma coisa a se notar ao usar rotas com parâmetros é que quanto o usuário navega de `/user/foo` para `/user/bar`, **a mesma instância do componente será reutilizada**.
+Como as duas rotas renderizam o mesmo componente, isso é mais eficiente do que destruir a instância antiga e criar uma nova. **Entretanto, isso também significa que os _lifecycle hooks_ do componente não serão chamados**.
 
-To react to params changes in the same component, you can simply watch the `$route` object:
+Para reagir à mudança de parâmetro no mesmo componente, você pode simplesmente monitorar o objeto `$route`:
 
 ```js
 const User = {
   template: '...',
   watch: {
     $route(to, from) {
-      // react to route changes...
+      // reage a mudanças de rota...
     }
   }
 }
 ```
 
-Or, use the `beforeRouteUpdate` [navigation guard](../advanced/navigation-guards.html) introduced in 2.2:
+Ou, usar o _[navigation guard](../advanced/navigation-guards.html)_ `beforeRouteUpdate` introduzido em 2.2:
 
 ```js
 const User = {
   template: '...',
   beforeRouteUpdate (to, from, next) {
-    // react to route changes...
-    // don't forget to call next()
+    // reage a mudanças de rota...
+    // não se esqueca de chamar next()
   }
 }
 ```
 
-## Catch all / 404 Not found Route
+## Pegar tudo / 404 Rota não encontrada
 
-Regular params will only match characters in between url fragments, separated by `/`. If we want to match **anything**, we can use the asterisk (`*`):
+Parâmetros regulares só corresponderão a caracteres entre os fragmentos da URL separados por `/`. Se quisermos identificar **qualquer coisa**, podemos usar o asterisco (`*`):
 
 ```js
 {
-  // will match everything
+  // irá corresponder à qualquer coisa
   path: '*'
 }
 {
-  // will match anything starting with `/user-`
+  // irá corresponder à qualquer coisa que inicie com `/user-`
   path: '/user-*'
 }
 ```
 
-When using _asterisk_ routes, make sure to correctly order your routes so that _asterisk_ ones are at the end.
-The route `{ path: '*' }` is usually used to 404 client side. If you are using _History mode_, make sure to [correctly configure your server](./history-mode.md) as well.
+Ao usar rotas _asterisco_, certifique-se de ordená-las corretamente, de forma que as que contenham _asteriscos_ fiquem no fim.
+A rota `{ path: '*' }` é comumente usada para o erro 404 no lado do cliente. Se estiver usando o _History mode_, tenha certeza de [configurar seu servidor corretamente](./history-mode.md) também.
 
-When using an _asterisk_, a param named `pathMatch` is automatically added to `$route.params`. It contains the rest of the url matched by the _asterisk_:
+Ao usar um _asterisco_, um parâmetro chamado `pathMatch` é adicionado automaticamente ao `$route.params`. Ele contém o resto da url correspondida pelo _asterisco_:
 
 ```js
-// Given a route { path: '/user-*' }
+// Dada um rota { path: '/user-*' }
 this.$router.push('/user-admin')
 this.$route.params.pathMatch // 'admin'
 
-// Given a route { path: '*' }
+// Dada uma rota { path: '*' }
 this.$router.push('/non-existing')
 this.$route.params.pathMatch // '/non-existing'
 ```
 
-## Advanced Matching Patterns
+## Padrões de Correspondência Avançados
 
-`vue-router` uses [path-to-regexp](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) as its path matching engine, so it supports many advanced matching patterns such as optional dynamic segments, zero or more / one or more requirements, and even custom regex patterns. Check out its [documentation](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0#parameters) for these advanced patterns, and [this example](https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js) of using them in `vue-router`.
+O `vue-router` usa o [path-to-regexp](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) como mecanismo de correspondência de caminho, portanto suporta muitos padrões de correspondência avançados, como segmentos dinâmicos opcionais, zero ou mais / um ou mais requisitos, e até mesmo padrões de regex customizados. Veja a [documentação](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0#parameters) deles para esses padrões avançados, e [esse examplo](https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js) de como usá-los no `vue-router`.
 
-## Matching Priority
+## Prioridade de Correspondência
 
-Sometimes the same URL may be matched by multiple routes. In such a case the matching priority is determined by the order of route definition: the earlier a route is defined, the higher priority it gets.
+Algumas vezes, a mesma URL pode ser correspondida por diversas rotas. Neste caso, a prioridade da correspondência é determinada pela ordem da definição da rota: quanto antes uma rota é definida, maior é a sua prioridade.
