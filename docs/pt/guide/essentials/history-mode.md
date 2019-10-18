@@ -1,8 +1,10 @@
 # HTML5 History Mode
 
 The default mode for `vue-router` is _hash mode_ - it uses the URL hash to simulate a full URL so that the page won't be reloaded when the URL changes.
+O `vue-router` é configurado com o _hash mode_ como padrão - ele usa uma hash na URL para simular uma URL real, assim a página não é recarregada quando a URL muda.
 
 To get rid of the hash, we can use the router's **history mode**, which leverages the `history.pushState` API to achieve URL navigation without a page reload:
+Para remover a hash nós podemos usar o **history mode**, que se beneficia da API `history.pushState` para alcançar a navegação via URL sem recarregar a ppágina:
 
 ``` js
 const router = new VueRouter({
@@ -12,10 +14,13 @@ const router = new VueRouter({
 ```
 
 When using history mode, the URL will look "normal," e.g. `http://oursite.com/user/id`. Beautiful!
+Ao usar o modo history a URL parecerá "normal", e.g. `http://nossosite.com/usuario/id`. Lindo!
 
 Here comes a problem, though: Since our app is a single page client side app, without a proper server configuration, the users will get a 404 error if they access `http://oursite.com/user/id` directly in their browser. Now that's ugly.
+Mas existe um problema: como nossa aplicação é uma, sem uma configuração de servidor apropriada os usuários receberão um erro 404 se eles acessarem `http://nossosite.com/usuario/id` diretamente em seus navegadores. E isso não é legal.
 
 Not to worry: To fix the issue, all you need to do is add a simple catch-all fallback route to your server. If the URL doesn't match any static assets, it should serve the same `index.html` page that your app lives in. Beautiful, again!
+
 
 ## Example Server Configurations
 
