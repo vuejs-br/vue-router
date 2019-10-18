@@ -64,7 +64,7 @@ const app = new Vue({
   router
 }).$mount('#app')
 
-// Agora a palicação foi iniciada!
+// Agora a aplicação foi iniciada!
 
 ```
 
