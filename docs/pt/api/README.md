@@ -6,13 +6,13 @@ sidebar: auto
 
 ## `<router-link>`
 
-`<router-link>` is the component for enabling user navigation in a router-enabled app. The target location is specified with the `to` prop. It renders as an `<a>` tag with correct `href` by default, but can be configured with the `tag` prop. In addition, the link automatically gets an active CSS class when the target route is active.
+`<router-link>` é o componente para ativar a navegação do usuário em um habicativo com roteamento habilitado. A localização alvo é especificada pela propriedade `to`. Ele renderiza como uma tag `<a>` com o `href` correto por padrão, mas pode ser configurado através da propriedade tag `tag`. Ademais, quando a _rota alvo_ estier ativa, ele receberá uma classe CSS automáticamente.
 
-`<router-link>` is preferred over hard-coded `<a href="...">` for the following reasons:
+`<router-link>` é preferrivél em vez de usar `<a href="...">` no código pelas seguintes razões:
 
-- It works the same way in both HTML5 history mode and hash mode, so if you ever decide to switch mode, or when the router falls back to hash mode in IE9, nothing needs to be changed.
-- In HTML5 history mode, `router-link` will intercept the click event so that the browser doesn't try to reload the page.
-- When you are using the `base` option in HTML5 history mode, you don't need to include it in `to` prop's URLs.
+- Funciona da mesma forma no modo _history_ ou _hash_ do HTML5, portanto, se você decidir mudar de modo ou o roteador usar o modo _hash_  como _fallback_ no IE9, nada precisará ser alterado.
+- No modo _history_ do HTML5, `router-link` interceptará o evento de clique para que o navegador não tente recarregar a página.
+- Quando você estiver usando a opção `base` do modo _history_ do HTML5, você não precisará incluir essa url dentro da propriedade ``to\`.
 
 ### `v-slot` API (3.1.0+)
 
