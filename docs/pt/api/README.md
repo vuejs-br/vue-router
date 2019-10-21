@@ -2,7 +2,7 @@
 sidebar: auto
 ---
 
-# API Reference
+# Referência da API
 
 ## `<router-link>`
 
