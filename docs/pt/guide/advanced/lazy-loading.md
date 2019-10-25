@@ -36,9 +36,9 @@ const router = new VueRouter({
 })
 ```
 
-## Grouping Components in the Same Chunk
+## Agrupando Componentes no Mesmo Pedaço
 
-Sometimes we may want to group all the components nested under the same route into the same async chunk. To achieve that we need to use [named chunks](https://webpack.js.org/guides/code-splitting-async/#chunk-names) by providing a chunk name using a special comment syntax (requires webpack > 2.4):
+As vezes, queremos agrupar todos os componentes aninhados sob a mesma rota no mesmo pedaço assíncrono. Para tal, precisamos utilizar [pedaços nomeados](https://webpack.js.org/guides/code-splitting-async/#chunk-names) providenciando um nome a um pedaço usando uma sintaxe espececial de comentários (requer webpack > 2.4):
 
 ``` js
 const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
@@ -46,4 +46,4 @@ const Bar = () => import(/* webpackChunkName: "group-foo" */ './Bar.vue')
 const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
 ```
 
-webpack will group any async module with the same chunk name into the same async chunk.
+O webpack vai agrupar qualquer módulo assíncrono com o mesmo nomde de pedaço no mesmo pedaço assíncrono.
