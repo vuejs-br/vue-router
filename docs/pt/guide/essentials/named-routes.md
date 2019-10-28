@@ -1,6 +1,6 @@
-# Named Routes
+# Rotas Nomeadas
 
-Sometimes it is more convenient to identify a route with a name, especially when linking to a route or performing navigations. You can give a route a name in the `routes` options while creating the Router instance:
+Em alguns casos, é mais conveniente identificar uma rota com um nome, especialmente ao vincular a uma rota ou ao executar navegações. Você pode dar um nome a uma `routes` nas opções de rotas ao criar a instância do roteador
 
 ``` js
 const router = new VueRouter({
@@ -14,18 +14,18 @@ const router = new VueRouter({
 })
 ```
 
-To link to a named route, you can pass an object to the `router-link` component's `to` prop:
+Para vincular a uma rota nomeada, você pode passar um objeto para o componente `router-link` através da propriedade `to`:
 
 ``` html
 <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
 ```
 
-This is the exact same object used programatically with `router.push()`:
+Esse é exatamente o mesmo objeto usado programaticamente com `router.push()`:
 
 ``` js
 router.push({ name: 'user', params: { userId: 123 }})
 ```
 
-In both cases, the router will navigate to the path `/user/123`.
+Em ambos os casos, o roteador navegará para o caminho `/user/123`.
 
-Full example [here](https://github.com/vuejs/vue-router/blob/dev/examples/named-routes/app.js).
+[Exemplo completo](https://github.com/vuejs/vue-router/blob/dev/examples/named-routes/app.js).

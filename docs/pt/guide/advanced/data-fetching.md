@@ -1,18 +1,18 @@
-# Data Fetching
+# Buscando Dados
 
-Sometimes you need to fetch data from the server when a route is activated. For example, before rendering a user profile, you need to fetch the user's data from the server. We can achieve this in two different ways:
+Em alguns casos, você precisa buscar dados do servidor quando uma rota é ativada. Por exemplo, antes de renderizar um perfil de usuário, você precisar buscar os dados daquele usuário no servidor. Podemos conseguir isso de duas maneiras diferentes:
 
-- **Fetching After Navigation**: perform the navigation first, and fetch data in the incoming component's lifecycle hook. Display a loading state while data is being fetched.
+- **Buscando Após a Navegação**: realiza a navegação primeiro, e busca os dados no próximo gatilho de ciclo de vida do componente. Mostrar um estado de carregamento enquanto os dados estiverem sendo buscados.
 
-- **Fetching Before Navigation**: Fetch data before navigation in the route enter guard, and perform the navigation after data has been fetched.
+- **Buscando Antes da Navegação**:  Busca os dados antes da navegação no protetor de navegação, e realiza a navegação após os dados terem sido buscados.
 
-Technically, both are valid choices - it ultimately depends on the user experience you are aiming for.
+Tecnicamente, ambas as escolhas são válidas - fundamentalmente, depende da experiência de usuário que você está almejando.
 
-## Fetching After Navigation
+## Buscando Após da Navegação
 
-When using this approach, we navigate and render the incoming component immediately, and fetch data in the component's `created` hook. It gives us the opportunity to display a loading state while the data is being fetched over the network, and we can also handle loading differently for each view.
+Quando utilizamos esta abordagem, navegamos e renderizamos o componente recebido imediatamente, e buscamos os dados no gatilhos `created` do componente. Isso nos dá a oportunidade de mostrar um estado de carregamento enquanto os dados estão sendo buscados através da rede, e podemos também, lidar com o carregamento de forma diferente para cada camada visual.
 
-Let's assume we have a `Post` component that needs to fetch the data for a post based on `$route.params.id`:
+Vamos supor que temos um componente `Post`, que precisa buscar os dados de uma postagem baseado em `$route.params.id`:
 
 ``` html
 <template>
@@ -43,19 +43,20 @@ export default {
     }
   },
   created () {
-    // fetch the data when the view is created and the data is
-    // already being observed
+    // busca os dados quando a camada de visualização é criada
+    // e os dados já estão sendo observados
     this.fetchData()
   },
   watch: {
-    // call again the method if the route changes
+    // chama novamente o método se a rota mudar
     '$route': 'fetchData'
   },
   methods: {
     fetchData () {
       this.error = this.post = null
       this.loading = true
-      // replace `getPost` with your data fetching util / API wrapper
+      // substitui `getPost` pelo seu utilitário de busca de dados
+      // / encapsulamento de API
       getPost(this.$route.params.id, (err, post) => {
         this.loading = false
         if (err) {
@@ -69,10 +70,9 @@ export default {
 }
 ```
 
-## Fetching Before Navigation
+## Buscando Antes da Navegação
 
-With this approach we fetch the data before actually navigating to the new
-route. We can perform the data fetching in the `beforeRouteEnter` guard in the incoming component, and only call `next` when the fetch is complete:
+Com esta abordagem, buscamos os dados antes da navegação para a nova rota. Podemos realizar a busca dos dados no protetor `beforeRouteEnter` do componente recebido, e só chamar `next` quando a busca estiver completa:
 
 ``` js
 export default {
@@ -87,8 +87,8 @@ export default {
       next(vm => vm.setData(err, post))
     })
   },
-  // when route changes and this component is already rendered,
-  // the logic will be slightly different.
+  // quando a rota mudar e este componente já estiver renderizado,
+  // a lógica será ligeiramente diferente.
   beforeRouteUpdate (to, from, next) {
     this.post = null
     getPost(to.params.id, (err, post) => {
@@ -108,4 +108,4 @@ export default {
 }
 ```
 
-The user will stay on the previous view while the resource is being fetched for the incoming view. It is therefore recommended to display a progress bar or some kind of indicator while the data is being fetched. If the data fetch fails, it's also necessary to display some kind of global warning message.
+O usuário permanecerá na camada de visualização anterior enquanto os recursos estão sendo buscados pela próxima camada de visualização. Logo, é recomendado mostrar uma barra de progresso ou algum tido de indicador enquanto os dados estão sendo buscados. Se a busca dos dados falhar, também é necessário mostrar algum tido de mensagem de alerta global.
