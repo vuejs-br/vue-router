@@ -1,4 +1,4 @@
-# Modo HTML5 History
+# Modo History do HTML5
 
 O `vue-router` é configurado com o _modo hash_ como padrão - ele usa a hash da URL para simular uma URL completa, assim a página não é recarregada quando a URL muda.
 
