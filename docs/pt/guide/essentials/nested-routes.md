@@ -1,6 +1,6 @@
-# Nested Routes
+# Rotas Aninhadas
 
-Real app UIs are usually composed of components that are nested multiple levels deep. It is also very common that the segments of a URL corresponds to a certain structure of nested components, for example:
+Interfaces de usuário de aplicações reais geralmente são compostas de componentes que estão aninhados profundamente em múltiplos níveis. Também é muito comum que os segmentos de uma URL correspondam a uma certa estrutura de componentes aninhados, por exemplo:
 
 ```
 /user/foo/profile                     /user/foo/posts
@@ -13,9 +13,9 @@ Real app UIs are usually composed of components that are nested multiple levels 
 +------------------+                  +-----------------+
 ```
 
-With `vue-router`, it is very simple to express this relationship using nested route configurations.
+Com o `vue-router`, é muito simples expressar esse relacionamento usando a configuração de rotas aninhadas.
 
-Given the app we created in the last chapter:
+Dada a aplicação que criamos no último capítulo:
 
 ``` html
 <div id="app">
@@ -35,7 +35,7 @@ const router = new VueRouter({
 })
 ```
 
-The `<router-view>` here is a top-level outlet. It renders the component matched by a top level route. Similarly, a rendered component can also contain its own, nested `<router-view>`. For example, if we add one inside the `User` component's template:
+Aqui `<router-view>` é a saída de alto nível. Ela renderiza o componente que corresponde à rota de alto nível. Semelhantemente, um componente renderizado também pode conter sua própria `<router-view>` aninhada. Por exemplo, se adicionarmos uma ao _template_ do componente `User`:
 
 ``` js
 const User = {
@@ -48,7 +48,7 @@ const User = {
 }
 ```
 
-To render components into this nested outlet, we need to use the `children` option in `VueRouter` constructor config:
+Para renderizar componentes dentro desta saída anínhada, precisamos usar a opção `children` na configuração do construtor do `VueRouter`:
 
 ``` js
 const router = new VueRouter({
@@ -56,14 +56,14 @@ const router = new VueRouter({
     { path: '/user/:id', component: User,
       children: [
         {
-          // UserProfile will be rendered inside User's <router-view>
-          // when /user/:id/profile is matched
+          // UserProfile será renderizado dentro da <router-view> do User
+          // quando /user/:id/profile for correspondida
           path: 'profile',
           component: UserProfile
         },
         {
-          // UserPosts will be rendered inside User's <router-view>
-          // when /user/:id/posts is matched
+          // UserPosts será renderizado dentro da <router-view> do User
+          // quando /user/:id/posts for correspondida
           path: 'posts',
           component: UserPosts
         }
@@ -73,11 +73,11 @@ const router = new VueRouter({
 })
 ```
 
-**Note that nested paths that start with `/` will be treated as a root path. This allows you to leverage the component nesting without having to use a nested URL.**
+**Observe que caminhos aninhados que começam com `/` serão tratados como um caminho raíz. Isso permite que você aproveite o aninhamento de componentes sem precisar usar um URL aninhado.**
 
-As you can see the `children` option is just another Array of route configuration objects like `routes` itself. Therefore, you can keep nesting views as much as you need.
+Como você pode ver a opção `children` é apenas outro Array de objetos de configuração de rotas, como o próprio `routes`. Portanto, você pode continuar aninhando _views_ o tanto que precisar.
 
-At this point, with the above configuration, when you visit `/user/foo`, nothing will be rendered inside `User`'s outlet, because no sub route is matched. Maybe you do want to render something there. In such case you can provide an empty subroute path:
+Neste ponto, com a configuração acima, quando você visitar `/user/foo`, nada será renderizado dentro da saída de `User`, porque nenhuma sub-rota é correspondida. Talvez você queira renderizar algo lá. Nesse caso, você pode fornecer um caminho de sub-rota vazio:
 
 ``` js
 const router = new VueRouter({
@@ -85,15 +85,15 @@ const router = new VueRouter({
     {
       path: '/user/:id', component: User,
       children: [
-        // UserHome will be rendered inside User's <router-view>
-        // when /user/:id is matched
+        // UserHome será renderizado dentro da <router-view> de User
+        // quando /user/:id for correspondida
         { path: '', component: UserHome },
 
-        // ...other sub routes
+        // ...outras sub-rotas
       ]
     }
   ]
 })
 ```
 
-A working demo of this example can be found [here](https://jsfiddle.net/yyx990803/L7hscd8h/).
+Um exemplo funcional pode ser encontrado [aqui](https://jsfiddle.net/yyx990803/L7hscd8h/).
