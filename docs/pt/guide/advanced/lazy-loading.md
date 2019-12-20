@@ -1,32 +1,32 @@
-# Lazy Loading Routes
+# Rotas de Carregamento Preguiçoso
 
-When building apps with a bundler, the JavaScript bundle can become quite large, and thus affect the page load time. It would be more efficient if we can split each route's components into a separate chunk, and only load them when the route is visited.
+Quando construímos aplicações com um empacotador, o pacote JavaScript pode ficar um pouco grande, e por tanto, afetar o tempo de carregamento da página. Seria mais eficiente se pudéssemos dividir cada componente de cada rota em um pedaço separado, e só carregá-los quando a rota for visitada.
 
-Combining Vue's [async component feature](https://vuejs.org/guide/components.html#Async-Components) and webpack's [code splitting feature](https://webpack.js.org/guides/code-splitting-async/), it's trivially easy to lazy-load route components.
+Combinando a [funcionalidade componentes assíncronos](https://br.vuejs.org/v2/guide/components-dynamic-async.html#Componentes-Assincronos) do Vue e a [funcionalidade _code splitting_](https://webpack.js.org/guides/code-splitting-async/) do webpack, é trivial carregar preguiçosamente os componentes de rotas.
 
-First, an async component can be defined as a factory function that returns a Promise (which should resolve to the component itself):
-
-``` js
-const Foo = () => Promise.resolve({ /* component definition */ })
-```
-
-Second, in webpack 2, we can use the [dynamic import](https://github.com/tc39/proposal-dynamic-import) syntax to indicate a code-split point:
+Primeiro, um componente assíncrono pode ser definido como uma função de fábrica que retorne uma _Promise_ (que deve se resolver para o próprio componente):
 
 ``` js
-import('./Foo.vue') // returns a Promise
+const Foo = () => Promise.resolve({ /* definição do componente */ })
 ```
 
-::: tip Note
-if you are using Babel, you will need to add the [syntax-dynamic-import](https://babeljs.io/docs/plugins/syntax-dynamic-import/) plugin so that Babel can properly parse the syntax.
+Em seguida, em webpack 2, podemos utilizar a sintaxe de [importação dinâmica](https://github.com/tc39/proposal-dynamic-import) para indicar um ponto de divisão de código:
+
+``` js
+import('./Foo.vue') // retorna uma Promise
+```
+
+::: tip Nota
+se você estiver utilizando Babel, você precisará adicionar o plugin [syntax-dynamic-import](https://babeljs.io/docs/plugins/syntax-dynamic-import/) para que o Babel possa analizar a sintaxe.
 :::
 
-Combining the two, this is how to define an async component that will be automatically code-split by webpack:
+Combinando esses dois passos, é assim que definimos um componente assíncrono que será automaticamente dividido pelo webpack:
 
 ``` js
 const Foo = () => import('./Foo.vue')
 ```
 
-Nothing needs to change in the route config, just use `Foo` as usual:
+Nada precisa ser modificado na configuração da rota, apenas utilize `Foo` normalmente:
 
 ``` js
 const router = new VueRouter({
@@ -36,9 +36,9 @@ const router = new VueRouter({
 })
 ```
 
-## Grouping Components in the Same Chunk
+## Agrupando Componentes no Mesmo Pedaço
 
-Sometimes we may want to group all the components nested under the same route into the same async chunk. To achieve that we need to use [named chunks](https://webpack.js.org/guides/code-splitting-async/#chunk-names) by providing a chunk name using a special comment syntax (requires webpack > 2.4):
+As vezes, queremos agrupar todos os componentes aninhados sob a mesma rota no mesmo pedaço assíncrono. Para tal, precisamos utilizar [pedaços nomeados](https://webpack.js.org/guides/code-splitting-async/#chunk-names) providenciando um nome a um pedaço usando uma sintaxe espececial de comentários (requer webpack > 2.4):
 
 ``` js
 const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
@@ -46,4 +46,4 @@ const Bar = () => import(/* webpackChunkName: "group-foo" */ './Bar.vue')
 const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
 ```
 
-webpack will group any async module with the same chunk name into the same async chunk.
+O webpack vai agrupar qualquer módulo assíncrono com o mesmo nomde de pedaço no mesmo pedaço assíncrono.
