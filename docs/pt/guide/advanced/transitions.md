@@ -1,6 +1,6 @@
-# Transitions
+# Transições
 
-Since the `<router-view>` is essentially a dynamic component, we can apply transition effects to it the same way using the `<transition>` component:
+Dado que o `<router-view>` é essencialmente um componente dinâmico, podemos aplicar efeitos de transição à ele da mesma maneira usando o componente `<transition>`:
 
 ``` html
 <transition>
@@ -8,11 +8,11 @@ Since the `<router-view>` is essentially a dynamic component, we can apply trans
 </transition>
 ```
 
-[All transition APIs](https://vuejs.org/guide/transitions.html) work the same here.
+[Todas as APIs de transição](https://vuejs.org/guide/transitions.html) funcionam da mesma forma aqui.
 
-## Per-Route Transition
+## Transição por Rota
 
-The above usage will apply the same transition for all routes. If you want each route's component to have different transitions, you can instead use `<transition>` with different names inside each route component:
+A utilização acima aplicará a mesma transição para todas as rotas. Se você deseja que cada componente de rota tenha uma transição diferente, você pode usar `<transition>` com diferentes nomes dentro de cada componente de rota:
 
 ``` js
 const Foo = {
@@ -32,20 +32,20 @@ const Bar = {
 }
 ```
 
-## Route-Based Dynamic Transition
+## Transição Dinâmica Baseada em Rota
 
-It is also possible to determine the transition to use dynamically based on the relationship between the target route and current route:
+Também é possível determinar a transição a ser usada dinâmicamente, baseando-se na relação entre a rota alvo e a rota atual:
 
 ``` html
-<!-- use a dynamic transition name -->
+<!-- use um nome de transição dinâmico -->
 <transition :name="transitionName">
   <router-view></router-view>
 </transition>
 ```
 
 ``` js
-// then, in the parent component,
-// watch the `$route` to determine the transition to use
+// então, no componente pai,
+// observe `$route` para determinar a transição a ser utilizada
 watch: {
   '$route' (to, from) {
     const toDepth = to.path.split('/').length
@@ -55,4 +55,4 @@ watch: {
 }
 ```
 
-See full example [here](https://github.com/vuejs/vue-router/blob/dev/examples/transitions/app.js).
+Veja o exemplo completo [aqui](https://github.com/vuejs/vue-router/blob/dev/examples/transitions/app.js).
