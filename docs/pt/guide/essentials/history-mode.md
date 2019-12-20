@@ -1,8 +1,8 @@
-# HTML5 History Mode
+# Modo History do HTML5
 
-The default mode for `vue-router` is _hash mode_ - it uses the URL hash to simulate a full URL so that the page won't be reloaded when the URL changes.
+O `vue-router` é configurado com o _modo hash_ como padrão - ele usa a hash da URL para simular uma URL completa, assim a página não é recarregada quando a URL muda.
 
-To get rid of the hash, we can use the router's **history mode**, which leverages the `history.pushState` API to achieve URL navigation without a page reload:
+Para remover a hash nós podemos usar o **modo history**, que aproveita a API `history.pushState` para fazer a navegação via URL sem recarregar a página:
 
 ``` js
 const router = new VueRouter({
@@ -11,13 +11,13 @@ const router = new VueRouter({
 })
 ```
 
-When using history mode, the URL will look "normal," e.g. `http://oursite.com/user/id`. Beautiful!
+Ao usar o modo history a URL parecerá "normal", e.g. `http://nossosite.com/usuario/id`. Lindo!
 
-Here comes a problem, though: Since our app is a single page client side app, without a proper server configuration, the users will get a 404 error if they access `http://oursite.com/user/id` directly in their browser. Now that's ugly.
+Mas existe um problema: como nossa aplicação é uma SPA (single page application), sem uma configuração de servidor apropriada os usuários receberão um erro 404 se eles acessarem `http://nossosite.com/usuario/id` diretamente em seus navegadores. E isso não é legal.
 
-Not to worry: To fix the issue, all you need to do is add a simple catch-all fallback route to your server. If the URL doesn't match any static assets, it should serve the same `index.html` page that your app lives in. Beautiful, again!
+Não se preocupe: para resolver esse problema tudo que você precisa fazer é adicionar uma simples rota de fallback. Se a URL não bater com nenhum recurso estático, ela deve servir o mesmo `index.html` que abriga a sua aplicação. Lindo de novo!
 
-## Example Server Configurations
+## Exemplos de configuração de servidor
 
 #### Apache
 
@@ -32,7 +32,7 @@ Not to worry: To fix the issue, all you need to do is add a simple catch-all fal
 </IfModule>
 ```
 
-Instead of `mod_rewrite`, you could also use [`FallbackResource`](https://httpd.apache.org/docs/2.2/mod/mod_dir.html#fallbackresource).
+No lugar de `mod_rewrite`, você pode usar [`FallbackResource`](https://httpd.apache.org/docs/2.2/mod/mod_dir.html#fallbackresource).
 
 #### nginx
 
@@ -42,7 +42,7 @@ location / {
 }
 ```
 
-#### Native Node.js
+#### Node.js nativo
 
 ```js
 const http = require('http')
@@ -52,7 +52,7 @@ const httpPort = 80
 http.createServer((req, res) => {
   fs.readFile('index.htm', 'utf-8', (err, content) => {
     if (err) {
-      console.log('We cannot open "index.htm" file.')
+      console.log('Não foi possível abrir o arquivo "index.htm".')
     }
 
     res.writeHead(200, {
@@ -62,18 +62,18 @@ http.createServer((req, res) => {
     res.end(content)
   })
 }).listen(httpPort, () => {
-  console.log('Server listening on: http://localhost:%s', httpPort)
+  console.log('Servidor rodando em: http://localhost:%s', httpPort)
 })
 ```
 
-#### Express with Node.js
+#### Express com Node.js
 
-For Node.js/Express, consider using [connect-history-api-fallback middleware](https://github.com/bripkens/connect-history-api-fallback).
+Com Node.js/Express, considere usar o middleware [connect-history-api-fallback](https://github.com/bripkens/connect-history-api-fallback).
 
 #### Internet Information Services (IIS)
 
-1. Install [IIS UrlRewrite](https://www.iis.net/downloads/microsoft/url-rewrite)
-2. Create a `web.config` file in the root directory of your site with the following:
+1. Instale o [IIS UrlRewrite](https://www.iis.net/downloads/microsoft/url-rewrite)
+2. Crie um arquivo `web.config` no diretório raíz da sua aplicação com o seguinte código:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -106,7 +106,7 @@ rewrite {
 
 #### Firebase hosting
 
-Add this to your `firebase.json`:
+Adicione isto ao seu `firebase.json`:
 
 ```
 {
@@ -122,9 +122,9 @@ Add this to your `firebase.json`:
 }
 ```
 
-## Caveat
+## Limitação
 
-There is a caveat to this: Your server will no longer report 404 errors as all not-found paths now serve up your `index.html` file. To get around the issue, you should implement a catch-all route within your Vue app to show a 404 page:
+Existe uma limitação nesse processo: seu servidor não vai mais reportar erros 404, pois todas as rotas não encontradas agora redirecionam para o seu arquivo `index.html`. Para resolver esse problema você deve implementar uma rota na sua aplicação Vue para mostrar a página de erro 404:
 
 ``` js
 const router = new VueRouter({
@@ -135,4 +135,4 @@ const router = new VueRouter({
 })
 ```
 
-Alternatively, if you are using a Node.js server, you can implement the fallback by using the router on the server side to match the incoming URL and respond with 404 if no route is matched. Check out the [Vue server side rendering documentation](https://ssr.vuejs.org/en/) for more information.
+Se estiver usando um servidor Node.js, você pode implementar uma função que use o roteador no lado do servidor para combinar a URL enviada e responder com 404 se nenhuma rota for encontrada. Leia a documentação do [Vue server side rendering](https://ssr.vuejs.org/en/)
