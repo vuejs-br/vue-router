@@ -1,10 +1,10 @@
-# Passing Props to Route Components
+# Passando _props_ para Componentes de Rota
 
-Using `$route` in your component creates a tight coupling with the route which limits the flexibility of the component as it can only be used on certain URLs.
+Usar `$route` em seus componentes cria um acoplamento firme com a rota, o que limita a flexibilidade do componente, pois só poderá ser usado em certas URLs.
 
-To decouple this component from the router use option `props`:
+Para desacoplar esse componente do _router_ use a opção `props`:
 
-**Instead of coupling to `$route`:**
+**Em vez de acoplar ao `$route`:**
 
 ``` js
 const User = {
@@ -17,7 +17,7 @@ const router = new VueRouter({
 })
 ```
 
-**Decouple it by using `props`**
+**Desacople usando `props`**
 
 ``` js
 const User = {
@@ -28,7 +28,7 @@ const router = new VueRouter({
   routes: [
     { path: '/user/:id', component: User, props: true },
 
-    // for routes with named views, you have to define the `props` option for each named view:
+    // para rotas com views nomeadas, você precisa definir a opção `props` para cada view nomeada:
     {
       path: '/user/:id',
       components: { default: User, sidebar: Sidebar },
@@ -38,15 +38,15 @@ const router = new VueRouter({
 })
 ```
 
-This allows you to use the component anywhere, which makes the component easier to reuse and test.
+Isso permite você usar o componente em qualquer lugar, tornando-o mais fácil de reusar e testar.
 
-## Boolean mode
+## Modo Boolean
 
-When `props` is set to `true`, the `route.params` will be set as the component props.
+Quando o valor `true` é atribuíto à `props`, os `route.params` serão atribuídos como _props_ do componente.
 
-## Object mode
+## Modo Object
 
-When `props` is an object, this will be set as the component props as-is. Useful for when the props are static.
+Quando `props` é um objeto, isso será atribuído às _props_ do componente. Útil para quando as props são estáticas.
 
 ``` js
 const router = new VueRouter({
@@ -56,9 +56,9 @@ const router = new VueRouter({
 })
 ```
 
-## Function mode
+## Modo Function
 
-You can create a function that returns props. This allows you to cast parameters into other types, combine static values with route-based values, etc.
+Você pode criar uma função que retorna _props_. Isso permite converter parâmetros em outros tipos, combinar valores estáticos com valores baseados nas rotas e etc.
 
 ``` js
 const router = new VueRouter({
@@ -68,8 +68,8 @@ const router = new VueRouter({
 })
 ```
 
-The URL `/search?q=vue` would pass `{query: 'vue'}` as props to the `SearchUser` component.
+A URL `/search?q=vue` irá passar `{query: 'vue'}` como _props_ para o componente `SearchUser`.
 
-Try to keep the `props` function stateless, as it's only evaluated on route changes. Use a wrapper component if you need state to define the props, that way vue can react to state changes.
+Tente manter a função `props` sem estado, pois ela é avaliada apenas em alterações de rota. User um componente _wrapper_ se você precisa do estado para definir as _props_, para que assim o vue possa reagir às alterações de estado.
 
-For advanced usage, check out the [example](https://github.com/vuejs/vue-router/blob/dev/examples/route-props/app.js).
+Para uso avançado, veja o [exemplo](https://github.com/vuejs/vue-router/blob/dev/examples/route-props/app.js).
