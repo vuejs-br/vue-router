@@ -1,8 +1,10 @@
-# Introduction
-
-:::tip VERSION NOTE
-For TypeScript users, `vue-router@3.0+` requires `vue@2.5+`, and vice versa.
-:::
+---
+home: true
+heroImage: /logo.png
+actionText: Get Started →
+actionLink: /installation.html
+footer: MIT Licensed | Copyright © 2014-present Evan You, Eduardo San Martin Morote
+---
 
 Vue Router is the official router for [Vue.js](http://vuejs.org). It deeply integrates with Vue.js core to make building Single Page Applications with Vue.js a breeze. Features include:
 
@@ -16,3 +18,5 @@ Vue Router is the official router for [Vue.js](http://vuejs.org). It deeply inte
 - Customizable Scroll Behavior
 
 [Get started](./guide/) or play with the [examples](https://github.com/vuejs/vue-router/tree/dev/examples) (see [`README.md`](https://github.com/vuejs/vue-router/) to run them).
+
+<HomeSponsors />

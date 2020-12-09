@@ -6,6 +6,8 @@ Remember that **params or query changes won't trigger enter/leave navigation gua
 
 ## Global Before Guards
 
+<div class="vueschool"><a href="https://vueschool.io/lessons/how-to-configure-an-authentication-middleware-route-guard-with-vue-router?friend=vuejs" target="_blank" rel="sponsored noopener" title="Learn how to create an authentication middleware with a global route guard on Vue School">Learn how navigation guards works with a free lesson on Vue School</a></div>
+
 You can register global before guards using `router.beforeEach`:
 
 ```js
@@ -39,7 +41,7 @@ Every guard function receives three arguments:
 ```js
 // BAD
 router.beforeEach((to, from, next) => {
-  if (!isAuthenticated) next('/login')
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
   // if the user is not authenticated, `next` is called twice
   next()
 })
@@ -48,7 +50,7 @@ router.beforeEach((to, from, next) => {
 ```js
 // GOOD
 router.beforeEach((to, from, next) => {
-  if (!isAuthenticated) next('/login')
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
   else next()
 })
 ```
@@ -104,11 +106,11 @@ const Foo = {
     // because it has not been created yet when this guard is called!
   },
   beforeRouteUpdate (to, from, next) {
-    // called when the route that renders this component has changed,
-    // but this component is reused in the new route.
+    // called when the route that renders this component has changed.
+    // This component being reused (by using an explicit `key`) in the new route or not doesn't change anything.
     // For example, for a route with dynamic params `/foo/:id`, when we
     // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
-    // will be reused, and this hook will be called when that happens.
+    // will be reused (unless you provided a `key` to `<router-view>`), and this hook will be called when that happens.
     // has access to `this` component instance.
   },
   beforeRouteLeave (to, from, next) {
@@ -152,6 +154,18 @@ beforeRouteLeave (to, from, next) {
     next(false)
   }
 }
+```
+
+If you are using mixins that add in-component navigation guards, make sure to add the mixin **after installing the router plugin**:
+
+```js
+Vue.use(Router)
+
+Vue.mixin({
+  beforeRouteUpdate(to, from ,next) {
+    // ...
+  }
+})
 ```
 
 ## The Full Navigation Resolution Flow

@@ -12,5 +12,8 @@ export {
   RouteRecord,
   Location,
   Route,
-  NavigationGuard
+  NavigationGuard,
+  NavigationGuardNext,
+  NavigationFailureType,
+  NavigationFailure
 } from './router'

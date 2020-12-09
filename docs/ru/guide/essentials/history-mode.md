@@ -19,6 +19,8 @@ const router = new VueRouter({
 
 ## Примеры конфигурирования серверов
 
+**Примечание**: В примерах ниже предполагается, что приложение публикуется в корневой каталог. При необходимости публикации во вложенный каталог нужно определить [опцию `publicPath` в Vue CLI](https://cli.vuejs.org/ru/config/#publicpath) и соответствующее [свойство маршрутизатора `base`](../../api/#base). Также необходимо внести изменения в примерах ниже чтобы использовать вложенный каталог вместо корневого (например, заменить `RewriteBase /` на `RewriteBase /name-of-your-subfolder/`).
+
 #### Apache
 
 ```apache
@@ -50,9 +52,9 @@ const fs = require('fs')
 const httpPort = 80
 
 http.createServer((req, res) => {
-  fs.readFile('index.htm', 'utf-8', (err, content) => {
+  fs.readFile('index.html', 'utf-8', (err, content) => {
     if (err) {
-      console.log('Невозможно открыть файл "index.htm".')
+      console.log('Невозможно открыть файл "index.html".')
     }
 
     res.writeHead(200, {

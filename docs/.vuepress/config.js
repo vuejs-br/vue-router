@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = ctx => ({
   locales: {
     '/': {
       lang: 'en-US',
@@ -33,18 +33,56 @@ module.exports = {
     '/pt/': {
         lang: 'pt',
         title: 'Vue Router',
-        description: 'O router oficial para Vue.js'
+        description: 'O roteador oficial para Vue.js'
     }
   },
-  serviceWorker: true,
-  theme: 'vue',
+  head: [
+    ['link', { rel: 'icon', href: `/logo.png` }],
+    [
+      'link',
+      { rel: 'apple-touch-icon', href: `/icons/apple-touch-icon-152x152.png` }
+    ],
+    [
+      'link',
+      {
+        rel: 'mask-icon',
+        href: '/icons/safari-pinned-tab.svg',
+        color: '#3eaf7c'
+      }
+    ],
+    [
+      'meta',
+      {
+        name: 'msapplication-TileImage',
+        content: '/icons/msapplication-icon-144x144.png'
+      }
+    ]
+  ],
+  // theme: '@vuepress/vue',
+  plugins: [
+    [
+      '@vuepress/pwa',
+      {
+        serviceWorker: true,
+        updatePopup: true
+      }
+    ]
+  ],
   themeConfig: {
-    algolia: {
-      apiKey: 'f854bb46d3de7eeb921a3b9173bd0d4c',
-      indexName: 'vue-router',
+    algolia: ctx.isProd
+      ? {
+          apiKey: 'f854bb46d3de7eeb921a3b9173bd0d4c',
+          indexName: 'vue-router'
+        }
+      : null,
+    carbonAds: {
+      carbon: 'CEBICK3I',
+      custom: 'CEBICK3M',
+      placement: 'routervuejsorg'
     },
     repo: 'vuejs/vue-router',
     docsDir: 'docs',
+    smoothScroll: true,
     locales: {
       '/': {
         label: 'English',
@@ -66,7 +104,6 @@ module.exports = {
         ],
         sidebar: [
           '/installation.md',
-          '/',
           {
             title: 'Essentials',
             collapsable: false,
@@ -91,7 +128,8 @@ module.exports = {
               '/guide/advanced/transitions.md',
               '/guide/advanced/data-fetching.md',
               '/guide/advanced/scroll-behavior.md',
-              '/guide/advanced/lazy-loading.md'
+              '/guide/advanced/lazy-loading.md',
+              '/guide/advanced/navigation-failures.md'
             ]
           }
         ]
@@ -116,7 +154,6 @@ module.exports = {
         ],
         sidebar: [
           '/zh/installation.md',
-          '/zh/',
           {
             title: '基础',
             collapsable: false,
@@ -166,7 +203,6 @@ module.exports = {
         ],
         sidebar: [
           '/ja/installation.md',
-          '/ja/',
           {
             title: '基本的な使い方',
             collapsable: false,
@@ -216,7 +252,6 @@ module.exports = {
         ],
         sidebar: [
           '/ru/installation.md',
-          '/ru/',
           {
             title: 'Основы',
             collapsable: false,
@@ -241,7 +276,8 @@ module.exports = {
               '/ru/guide/advanced/transitions.md',
               '/ru/guide/advanced/data-fetching.md',
               '/ru/guide/advanced/scroll-behavior.md',
-              '/ru/guide/advanced/lazy-loading.md'
+              '/ru/guide/advanced/lazy-loading.md',
+              '/ru/guide/advanced/navigation-failures.md'
             ]
           }
         ]
@@ -266,7 +302,6 @@ module.exports = {
         ],
         sidebar: [
           '/kr/installation.md',
-          '/kr/',
           {
             title: '기본 사용법',
             collapsable: false,
@@ -297,105 +332,104 @@ module.exports = {
         ]
       },
       '/fr/': {
-          label: 'Français',
-          selectText: 'Langues',
-          editLinkText: 'Editer cette page sur Github',
-          nav: [
-              {
-                  text: 'Guide',
-                  link: '/fr/guide/'
-              },
-              {
-                  text: 'API',
-                  link: '/fr/api/'
-              },
-              {
-                  text: 'Notes de version',
-                  link: 'https://github.com/vuejs/vue-router/releases'
-              }
-          ],
-          sidebar: [
-              '/fr/installation.md',
-              '/fr/',
-              {
-                  title: 'Essentiels',
-                  collapsable: false,
-                  children: [
-                      '/fr/guide/',
-                      '/fr/guide/essentials/dynamic-matching.md',
-                      '/fr/guide/essentials/nested-routes.md',
-                      '/fr/guide/essentials/navigation.md',
-                      '/fr/guide/essentials/named-routes.md',
-                      '/fr/guide/essentials/named-views.md',
-                      '/fr/guide/essentials/redirect-and-alias.md',
-                      '/fr/guide/essentials/passing-props.md',
-                      '/fr/guide/essentials/history-mode.md'
-                  ]
-              },
-              {
-                  title: 'Avancés',
-                  collapsable: false,
-                  children: [
-                      '/fr/guide/advanced/navigation-guards.md',
-                      '/fr/guide/advanced/meta.md',
-                      '/fr/guide/advanced/transitions.md',
-                      '/fr/guide/advanced/data-fetching.md',
-                      '/fr/guide/advanced/scroll-behavior.md',
-                      '/fr/guide/advanced/lazy-loading.md'
-                  ]
-              }
-          ]
+        label: 'Français',
+        selectText: 'Langues',
+        editLinkText: 'Editer cette page sur Github',
+        nav: [
+          {
+            text: 'Guide',
+            link: '/fr/guide/'
+          },
+          {
+            text: 'API',
+            link: '/fr/api/'
+          },
+          {
+            text: 'Notes de version',
+            link: 'https://github.com/vuejs/vue-router/releases'
+          }
+        ],
+        sidebar: [
+          '/fr/installation.md',
+          {
+            title: 'Essentiels',
+            collapsable: false,
+            children: [
+              '/fr/guide/',
+              '/fr/guide/essentials/dynamic-matching.md',
+              '/fr/guide/essentials/nested-routes.md',
+              '/fr/guide/essentials/navigation.md',
+              '/fr/guide/essentials/named-routes.md',
+              '/fr/guide/essentials/named-views.md',
+              '/fr/guide/essentials/redirect-and-alias.md',
+              '/fr/guide/essentials/passing-props.md',
+              '/fr/guide/essentials/history-mode.md'
+            ]
+          },
+          {
+            title: 'Avancés',
+            collapsable: false,
+            children: [
+              '/fr/guide/advanced/navigation-guards.md',
+              '/fr/guide/advanced/meta.md',
+              '/fr/guide/advanced/transitions.md',
+              '/fr/guide/advanced/data-fetching.md',
+              '/fr/guide/advanced/scroll-behavior.md',
+              '/fr/guide/advanced/lazy-loading.md'
+            ]
+          }
+        ]
       },
       '/pt/': {
-          label: 'Português',
-          selectText: 'Idiomas',
-          editLinkText: 'Edite esta página no GitHub',
-          nav: [
-              {
-                  text: 'Guia',
-                  link: '/pt/guide/'
-              },
-              {
-                  text: 'API',
-                  link: '/pt/api/'
-              },
-              {
-                  text: 'Notas de Versão',
-                  link: 'https://github.com/vuejs/vue-router/releases'
-              }
-          ],
-          sidebar: [
-              '/pt/installation.md',
-              '/pt/',
-              {
-                  title: 'Essenciais',
-                  collapsable: false,
-                  children: [
-                      '/pt/guide/',
-                      '/pt/guide/essentials/dynamic-matching.md',
-                      '/pt/guide/essentials/nested-routes.md',
-                      '/pt/guide/essentials/navigation.md',
-                      '/pt/guide/essentials/named-routes.md',
-                      '/pt/guide/essentials/named-views.md',
-                      '/pt/guide/essentials/redirect-and-alias.md',
-                      '/pt/guide/essentials/passing-props.md',
-                      '/pt/guide/essentials/history-mode.md'
-                  ]
-              },
-              {
-                  title: 'Avançado',
-                  collapsable: false,
-                  children: [
-                      '/pt/guide/advanced/navigation-guards.md',
-                      '/pt/guide/advanced/meta.md',
-                      '/pt/guide/advanced/transitions.md',
-                      '/pt/guide/advanced/data-fetching.md',
-                      '/pt/guide/advanced/scroll-behavior.md',
-                      '/pt/guide/advanced/lazy-loading.md'
-                  ]
-              }
-          ]
+        label: 'Português',
+        selectText: 'Idiomas',
+        editLinkText: 'Edite esta página no GitHub',
+        nav: [
+          {
+            text: 'Guia',
+            link: '/pt/guide/'
+          },
+          {
+            text: 'API',
+            link: '/pt/api/'
+          },
+          {
+            text: 'Notas de Versão',
+            link: 'https://github.com/vuejs/vue-router/releases'
+          }
+        ],
+        sidebar: [
+          '/pt/installation.md',
+          '/pt/',
+          {
+            title: 'Essenciais',
+            collapsable: false,
+            children: [
+              '/pt/guide/',
+              '/pt/guide/essentials/dynamic-matching.md',
+              '/pt/guide/essentials/nested-routes.md',
+              '/pt/guide/essentials/navigation.md',
+              '/pt/guide/essentials/named-routes.md',
+              '/pt/guide/essentials/named-views.md',
+              '/pt/guide/essentials/redirect-and-alias.md',
+              '/pt/guide/essentials/passing-props.md',
+              '/pt/guide/essentials/history-mode.md'
+            ]
+          },
+          {
+            title: 'Avançado',
+            collapsable: false,
+            children: [
+              '/pt/guide/advanced/navigation-guards.md',
+              '/pt/guide/advanced/meta.md',
+              '/pt/guide/advanced/transitions.md',
+              '/pt/guide/advanced/data-fetching.md',
+              '/pt/guide/advanced/scroll-behavior.md',
+              '/pt/guide/advanced/lazy-loading.md'
+            ]
+          }
+        ]
       },
     }
   }
-}
+})

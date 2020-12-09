@@ -1,5 +1,6 @@
 import { warn } from '../util/warn'
 import { extend } from '../util/misc'
+import { handleRouteEntered } from '../util/route'
 
 export default {
   name: 'RouterView',
@@ -26,14 +27,12 @@ export default {
     let depth = 0
     let inactive = false
     while (parent && parent._routerRoot !== parent) {
-      const vnodeData = parent.$vnode && parent.$vnode.data
-      if (vnodeData) {
-        if (vnodeData.routerView) {
-          depth++
-        }
-        if (vnodeData.keepAlive && parent._inactive) {
-          inactive = true
-        }
+      const vnodeData = parent.$vnode ? parent.$vnode.data : {}
+      if (vnodeData.routerView) {
+        depth++
+      }
+      if (vnodeData.keepAlive && parent._directInactive && parent._inactive) {
+        inactive = true
       }
       parent = parent.$parent
     }
@@ -41,17 +40,32 @@ export default {
 
     // render previous view if the tree is inactive and kept-alive
     if (inactive) {
-      return h(cache[name], data, children)
+      const cachedData = cache[name]
+      const cachedComponent = cachedData && cachedData.component
+      if (cachedComponent) {
+        // #2301
+        // pass props
+        if (cachedData.configProps) {
+          fillPropsinData(cachedComponent, data, cachedData.route, cachedData.configProps)
+        }
+        return h(cachedComponent, data, children)
+      } else {
+        // render previous empty view
+        return h()
+      }
     }
 
     const matched = route.matched[depth]
-    // render empty node if no matched route
-    if (!matched) {
+    const component = matched && matched.components[name]
+
+    // render empty node if no matched route or no config component
+    if (!matched || !component) {
       cache[name] = null
       return h()
     }
 
-    const component = cache[name] = matched.components[name]
+    // cache component
+    cache[name] = { component }
 
     // attach instance registration hook
     // this will be called in the instance's injected lifecycle hooks
@@ -81,24 +95,41 @@ export default {
       ) {
         matched.instances[name] = vnode.componentInstance
       }
+
+      // if the route transition has already been confirmed then we weren't
+      // able to call the cbs during confirmation as the component was not
+      // registered yet, so we call it here.
+      handleRouteEntered(route)
     }
 
-    // resolve props
-    let propsToPass = data.props = resolveProps(route, matched.props && matched.props[name])
-    if (propsToPass) {
-      // clone to prevent mutation
-      propsToPass = data.props = extend({}, propsToPass)
-      // pass non-declared props as attrs
-      const attrs = data.attrs = data.attrs || {}
-      for (const key in propsToPass) {
-        if (!component.props || !(key in component.props)) {
-          attrs[key] = propsToPass[key]
-          delete propsToPass[key]
-        }
-      }
+    const configProps = matched.props && matched.props[name]
+    // save route and configProps in cache
+    if (configProps) {
+      extend(cache[name], {
+        route,
+        configProps
+      })
+      fillPropsinData(component, data, route, configProps)
     }
 
     return h(component, data, children)
+  }
+}
+
+function fillPropsinData (component, data, route, configProps) {
+  // resolve props
+  let propsToPass = data.props = resolveProps(route, configProps)
+  if (propsToPass) {
+    // clone to prevent mutation
+    propsToPass = data.props = extend({}, propsToPass)
+    // pass non-declared props as attrs
+    const attrs = data.attrs = data.attrs || {}
+    for (const key in propsToPass) {
+      if (!component.props || !(key in component.props)) {
+        attrs[key] = propsToPass[key]
+        delete propsToPass[key]
+      }
+    }
   }
 }
 

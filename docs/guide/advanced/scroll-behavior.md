@@ -1,5 +1,7 @@
 # Scroll Behavior
 
+<div class="vueschool"><a href="https://vueschool.io/lessons/how-to-control-the-scroll-behavior-of-vue-router?friend=vuejs" target="_blank" rel="sponsored noopener" title="Learn how to control the scroll behavior on Vue School">Learn to control the scroll behavior with a free lesson on Vue School</a></div>
+
 When using client-side routing, we may want to scroll to top when navigating to a new route, or preserve the scrolling position of history entries just like real page reload does. `vue-router` allows you to achieve these and even better, allows you to completely customize the scroll behavior on route navigation.
 
 **Note: this feature only works if the browser supports `history.pushState`.**
@@ -78,3 +80,18 @@ scrollBehavior (to, from, savedPosition) {
 ```
 
 It's possible to hook this up with events from a page-level transition component to make the scroll behavior play nicely with your page transitions, but due to the possible variance and complexity in use cases, we simply provide this primitive to enable specific userland implementations.
+
+## Smooth Scrolling
+
+You can enable native smooth scrolling for [browsers supporting it](https://developer.mozilla.org/en-US/docs/Web/API/ScrollToOptions/behavior) by simply adding the `behavior` option to the object returned inside `scrollBehavior`:
+
+```js
+scrollBehavior (to, from, savedPosition) {
+  if (to.hash) {
+    return {
+      selector: to.hash,
+      behavior: 'smooth',
+    }
+  }
+}
+```
