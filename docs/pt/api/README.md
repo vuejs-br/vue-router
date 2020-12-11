@@ -2,23 +2,23 @@
 sidebar: auto
 ---
 
-# API Reference
+# Referência da API
 
 ## `<router-link>`
 
-`<router-link>` is the component for enabling user navigation in a router-enabled app. The target location is specified with the `to` prop. It renders as an `<a>` tag with correct `href` by default, but can be configured with the `tag` prop. In addition, the link automatically gets an active CSS class when the target route is active.
+`<router-link>` é um componente que dá a possibilidade ao usuário de navegar em uma aplicação com a funcionalidade de rotas ativada. O local de destino é especificado atráves da propriedade `to`. Ela renderiza como uma tag `<a>` com o `href` corrento por padrão, mas pode ser configurada usando a propriedade `tag`. Em adição, o link automaticamente recebe um classe css active quando o destino da rota estiver ativo.
 
-`<router-link>` is preferred over hard-coded `<a href="...">` for the following reasons:
+É preferível usar `<router-link>` em detrimento do `<a href="...">` pelas seguintes razões:
 
-- It works the same way in both HTML5 history mode and hash mode, so if you ever decide to switch mode, or when the router falls back to hash mode in IE9, nothing needs to be changed.
-- In HTML5 history mode, `router-link` will intercept the click event so that the browser doesn't try to reload the page.
-- When you are using the `base` option in HTML5 history mode, you don't need to include it in `to` prop's URLs.
+- Ele funciona da mesma maneira em ambos os modos history do HTML5 e hash, mesmo se você até decidir mudar de modo, or quando a rota resolver voltar para o modo hash dentro do IE9, nada precisa ser mudado.
+- No modo history do HTML5, `router-link` interceptará o evento de clique então o navegador(browser) não tentará recarregar a página.
+- Quando você estiver usando a opção `base` no modo history do HTML5, você não precisa inclui-lo na `to` da propriedade das URLs.
 
-### `v-slot` API (3.1.0+)
+### `v-slot` API (a partir da versão 3.1.0+)
 
-`router-link` exposes a low level customization through a [scoped slot](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots). This is a more advanced API that primarily targets library authors but can come in handy for developers as well, most of the time in a custom component like a _NavLink_ or other.
+O `router-link` expõe uma personalização de baixo nível através de um [slot escopado](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots). Isto é uma API mais avançada que primeiramente tem como alvo autores de bibliotecas mas que podem vir a ser úteis para desenvolvedores também, na maioria das vezes em componente personalizado um _NavLink_ ou outro.
 
-**When using the `v-slot` API, it is required to pass one single child to `router-link`**. If you don't, `router-link` will wrap its children in a `span` element.
+**Quando estiver usando a API `v-slot`, é fundamental passar um único filho ao `router-link`**. Se você não o fizer, `router-link` irá envolver seus filhos em um elemento `span`.
 
 ```html
 <router-link
@@ -31,15 +31,16 @@ sidebar: auto
 </router-link>
 ```
 
-- `href`: resolved url. This would be the `href` attribute of an `a` element
-- `route`: resolved normalized location
-- `navigate`: function to trigger the navigation. **It will automatically prevent events when necessary**, the same way `router-link` does
-- `isActive`: `true` if the [active class](#active-class) should be applied. Allows to apply an arbitrary class
-- `isExactActive`: `true` if the [exact active class](#exact-active-class) should be applied. Allows to apply an arbitrary class
+- `href`: url resolvida. Este seria o atributo `href` de um elemento `a`
+- `route`: localização normalizada resolvida
+- `navegate`: função para acionar a navegação. **Isso irá automaticamente prevenir eventos quando for necessário**, do mesmo jeito que `router-link` faz
+- `isActive`: `true` se a [classe active](#active-class) deve ser applicada. Permite aplicar uma classe arbitrária
+- `isExactActive`: `true` se a [classe exact active](#exact-active-class) deve ser aplicada. Permite aplicar uma classe arbitrária
 
-#### Example: Applying Active Class to Outer Element
 
-Sometimes we may want the active class to be applied to an outer element rather than the `<a>` tag itself, in that case, you can wrap that element inside a `router-link` and use the `v-slot` properties to create your link:
+#### Exemplo: Aplicando a classe active ao elemento externo
+
+Algumas vezes nós podemos querer que a classe active seja aplicada ao elemento externo ao invés da própria tag `<a>`, neste caso, você pode envolver aquele elemento dentro de um `router-link` e usar a propriedade `v-slot` para criar o seu link:
 
 ```html
 <router-link
@@ -55,37 +56,37 @@ Sometimes we may want the active class to be applied to an outer element rather 
 ```
 
 :::tip
-If you add a `target="_blank"` to your `a` element, you must omit the `@click="navigate"` handler.
+Se você adicionar um `target="_blank"` ao seu elemento `a`, você deve omitir o manipulador `@click="navigate"`.
 :::
 
-## `<router-link>` Props
+## Propriedades de `<router-link>`
 
 ### to
 
-- type: `string | Location`
-- required
+- tipo: `string | destino`
+- obrigatório
 
-  Denotes the target route of the link. When clicked, the value of the `to` prop will be passed to `router.push()` internally, so the value can be either a string or a location descriptor object.
+  Determina a rota de destino do link. Quando clicado, o valor da propriedade to será internamente passada ao `router.push()`, então o valor pode ser ou uma string ou um objeto descritor de destino.
 
   ```html
-  <!-- literal string -->
+  <!-- string literal -->
   <router-link to="home">Home</router-link>
-  <!-- renders to -->
+  <!-- renderiza para -->
   <a href="home">Home</a>
 
-  <!-- javascript expression using `v-bind` -->
+  <!-- expressão javascript usando `v-bind` -->
   <router-link v-bind:to="'home'">Home</router-link>
 
-  <!-- Omitting `v-bind` is fine, just as binding any other prop -->
+  <!-- omitir `v-bind` está bem, assim como vincular outra propriedade qualquer -->
   <router-link :to="'home'">Home</router-link>
 
-  <!-- same as above -->
+  <!-- o mesmo que o de cima -->
   <router-link :to="{ path: 'home' }">Home</router-link>
 
-  <!-- named route -->
+  <!-- rota nomeada -->
   <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
 
-  <!-- with query, resulting in `/register?plan=private` -->
+  <!-- com consulta, resultando em `/register?plan=private` -->
   <router-link :to="{ path: 'register', query: { plan: 'private' }}"
     >Register</router-link
   >
@@ -93,10 +94,10 @@ If you add a `target="_blank"` to your `a` element, you must omit the `@click="n
 
 ### replace
 
-- type: `boolean`
-- default: `false`
+- tipo: `booleano`
+- valor padrão: `false`
 
-  Setting `replace` prop will call `router.replace()` instead of `router.push()` when clicked, so the navigation will not leave a history record.
+  Configura a propriedade `replace` que irá chamar `router.replace()` ao invés de `router.push()` quando clicado, assim a navegação não irá deixar gravação de histórico.
 
   ```html
   <router-link :to="{ path: '/abc'}" replace></router-link>
@@ -104,10 +105,10 @@ If you add a `target="_blank"` to your `a` element, you must omit the `@click="n
 
 ### append
 
-- type: `boolean`
-- default: `false`
+- tipo: `boolean`
+- valor padrão: `false`
 
-  Setting `append` prop always appends the relative path to the current path. For example, assuming we are navigating from `/a` to a relative link `b`, without `append` we will end up at `/b`, but with `append` we will end up at `/a/b`.
+  Configura da propriedade `append` que sempre anexa o caminho relativo ao o caminho atual. Por exemplo, vamos assumir que nós estámos navegando de `/a` para um link relativo `b`, sem o `append` nós iremos terminar em `/b`, mas com `append` nós iremos terminar em `/a/b`.
 
   ```html
   <router-link :to="{ path: 'relative/path'}" append></router-link>
@@ -115,61 +116,69 @@ If you add a `target="_blank"` to your `a` element, you must omit the `@click="n
 
 ### tag
 
-- type: `string`
-- default: `"a"`
+- tipo: `string`
+- valor padrão: `"a"`
 
-  Sometimes we want `<router-link>` to render as another tag, e.g `<li>`. Then we can use `tag` prop to specify which tag to render to, and it will still listen to click events for navigation.
+  Algumas vezes nós quereremos que `<router-link>` renderize como uma outra tag diferente, por exemplo `<li>`. Logo nós podemos usar a propriedade `tag` para especificar para qual renderizar, e ela irá continuar a responder ao evento de clique para a navegação.
 
   ```html
   <router-link to="/foo" tag="li">foo</router-link>
-  <!-- renders as -->
+  <!-- renderiza como -->
   <li>foo</li>
   ```
 
+
 ### active-class
 
-- type: `string`
-- default: `"router-link-active"`
+- tipo: `string`
+- valor padrão: `"router-link-active"`
 
-  Configure the active CSS class applied when the link is active. Note the default value can also be configured globally via the `linkActiveClass` router constructor option.
+  Configura a classe CSS active que é aplicada quando o link está ativo. Note que o valor padrão pode ser também globalmente configurado através da opção `linkActiveClass` do construtor de router.
 
 ### exact
 
-- type: `boolean`
+- tipo: `boolean`
 - default: `false`
 
-  The default active class matching behavior is **inclusive match**. For example, `<router-link to="/a">` will get this class applied as long as the current path starts with `/a/` or is `/a`.
+  O comportamento de captura da classe active padrão é **captura inclusiva**. Por exemplo, `<router-link to="/a">` irá ter essa classe aplicada contanto que o caminho atual comece com `/a/` ou é `/a`.
 
-  One consequence of this is that `<router-link to="/">` will be active for every route! To force the link into "exact match mode", use the `exact` prop:
+  Uma consequência disso é que `<router-link to="/">` será ativa para todas rotas! Para forçar o link dentro do "modo de captura exata", usa a propriedade `exact`:
 
   ```html
-  <!-- this link will only be active at `/` -->
+  <!-- Este link só será ativo em at `/` -->
   <router-link to="/" exact></router-link>
   ```
 
-  Check out more examples explaining active link class [live](https://jsfiddle.net/8xrk1n9f/).
+  Consulte mais exemplos explicando a classe de link ativo [ao vivo](https://jsfiddle.net/8xrk1n9f/).
 
 ### event
 
-- type: `string | Array<string>`
-- default: `'click'`
+- tipo: `string | Array<string>`
+- valor padrão: `'click'`
 
-  Specify the event(s) that can trigger the link navigation.
+  Especifica os eventos que podem ser acionados no link de navegação.
 
 ### exact-active-class
 
-- type: `string`
-- default: `"router-link-exact-active"`
+- tipo: `string`
+- valor padrão: `"router-link-exact-active"`
 
-  Configure the active CSS class applied when the link is active with exact match. Note the default value can also be configured globally via the `linkExactActiveClass` router constructor option.
+  Configura a classe CSS active aplicada quando o link é ativo com a captura exata. Note que o valor padrão também pode ser configurado globalmente na opção `linkExactActiveClass` do construtor do router.
+
+### aria-current-value
+
+- tipo: `'page' | 'step' | 'location' | 'date' | 'time'`
+- valor padrão: `'page'`
+
+  Configura o valor de `aria-current` quando o link é ativo com a captura exata. Deve ser um dos [valores permitidos para aria-current](https://www.w3.org/TR/wai-aria-1.2/#aria-current) na especificação de ARIA. Na maioria dos casos, o valor padrão `page` deve ser a melhor escolha.
 
 ## `<router-view>`
 
-The `<router-view>` component is a functional component that renders the matched component for the given path. Components rendered in `<router-view>` can also contain its own `<router-view>`, which will render components for nested paths.
+O componente `<router-view>` é um componente funcional que renderiza o componente que corresponde ao caminho passado. Componentes renderizados em `<router-view>` também podem conter seus próprios `<router-view>`, que renderizarão componentes para caminhos aninhados.
 
-Any non-name props will be passed along to the rendered component, however most of the time the per-route data is contained in the route's params.
+Quaisquer propriedades sem nome serão passadas através do componente renderizado, contudo muitas das vezes os dados para rotas são contidas dentro dos parametros da rota.
 
-Since it's just a component, it works with `<transition>` and `<keep-alive>`. When using the both together, make sure to use `<keep-alive>` inside:
+Desde seja apenas um componente, funciona com `<transition>` e `<keep-alive>`. Quando usa-los juntos, certifique-se de usar `<keep-alive>` por dentro:
 
 ```html
 <transition>
@@ -179,87 +188,88 @@ Since it's just a component, it works with `<transition>` and `<keep-alive>`. Wh
 </transition>
 ```
 
-## `<router-view>` Props
+## Propriedades do `<router-view>`
 
 ### name
 
-- type: `string`
-- default: `"default"`
+- tipo: `string`
+- valor padrão: `"default"`
 
-  When a `<router-view>` has a name, it will render the component with the corresponding name in the matched route record's `components` option. See [Named Views](../guide/essentials/named-views.md) for an example.
+  Quando um `<router-view>` tem um nome, ele irá renderizar o componente com o nome correspondente na opção `components` do dado de captura de rota. Consulte por [View Nomeadas](../guide/essentials/named-views.md) para ter um exemplo.
 
-## Router Construction Options
+## Opções do Construtor Router
 
 ### routes
 
-- type: `Array<RouteConfig>`
+- tipo: `Array<RouteConfig>`
 
-  Type declaration for `RouteConfig`:
+  Declaração de tipo para `RouteConfig`:
 
   ```ts
   interface RouteConfig = {
     path: string,
     component?: Component,
-    name?: string, // for named routes
-    components?: { [name: string]: Component }, // for named views
+    name?: string, // para rotas nomedas
+    components?: { [name: string]: Component }, // para views nomedas
     redirect?: string | Location | Function,
     props?: boolean | Object | Function,
     alias?: string | Array<string>,
-    children?: Array<RouteConfig>, // for nested routes
+    children?: Array<RouteConfig>, // para rotas aninhadas
     beforeEnter?: (to: Route, from: Route, next: Function) => void,
     meta?: any,
 
-    // 2.6.0+
-    caseSensitive?: boolean, // use case sensitive match? (default: false)
-    pathToRegexpOptions?: Object // path-to-regexp options for compiling regex
+    // A partir da versão 2.6.0+
+    caseSensitive?: boolean, // usa a captura com sensibilidade de caixa? (default: false)
+    pathToRegexpOptions?: Object // opção caminho-para-expressão regular para compilar expressões regulares
   }
   ```
 
 ### mode
 
-- type: `string`
+- tipo: `string`
 
-- default: `"hash" (in browser) | "abstract" (in Node.js)`
+- valor padrão: `"hash" (no browser) | "abstract" (no Node.js)`
 
-- available values: `"hash" | "history" | "abstract"`
+- valores disponíveis: `"hash" | "history" | "abstract"`
 
-  Configure the router mode.
+  Configura o modo de roteamento.
 
-  - `hash`: uses the URL hash for routing. Works in all Vue-supported browsers, including those that do not support HTML5 History API.
+  - `hash`: usa a URL com hash (#) para roteamento. Funciona em todos os browsers que suportados pelo Vue, incluindo aqueles que não suportam a API History da HTML5.
 
-  - `history`: requires HTML5 History API and server config. See [HTML5 History Mode](../guide/essentials/history-mode.md).
+  - `history`: requer a API History da HTML5 e configuração de servidor. Consulte [Modo History da HTML5](../guide/essentials/history-mode.md).
 
-  - `abstract`: works in all JavaScript environments, e.g. server-side with Node.js. **The router will automatically be forced into this mode if no browser API is present.**
+  - `abstract`: funciona em todos ambientes JavaScript, por exemplo no lado do servidor com Node.js. **O router irá automaticamente ser forçado neste modo se nenhuma API do browser se fizer presente.**
+
 
 ### base
 
-- type: `string`
+- tipo: `string`
 
-- default: `"/"`
+- valor padrão: `"/"`
 
-  The base URL of the app. For example, if the entire single page application is served under `/app/`, then `base` should use the value `"/app/"`.
+  A URL de base da aplicação. Por exemplo, se toda a aplicação de única página estiver sendo servida debaixo de `/app/`, então o `base` deveria usar o valor `"/app/"`.
 
 ### linkActiveClass
 
-- type: `string`
+- tipo: `string`
 
-- default: `"router-link-active"`
+- valor padrão: `"router-link-active"`
 
-  Globally configure `<router-link>` default active class. Also see [router-link](#router-link).
+  Configura globalmente a classe ativa padrão do `<router-link>`. Veja também [router-link](#router-link).
 
 ### linkExactActiveClass
 
-- type: `string`
+- tipo: `string`
 
-- default: `"router-link-exact-active"`
+- valor padrão: `"router-link-exact-active"`
 
-  Globally configure `<router-link>` default active class for exact matches. Also see [router-link](#router-link).
+  Configura globalmente a classe padrão ativa para elemento `<router-link>` ativo exato. Veja também [router-link](#route-link).
 
 ### scrollBehavior
 
-- type: `Function`
+- tipo: `Function`
 
-  Signature:
+  Assinatura:
 
   ```
   type PositionDescriptor =
@@ -274,45 +284,45 @@ Since it's just a component, it works with `<transition>` and `<keep-alive>`. Wh
   ) => PositionDescriptor | Promise<PositionDescriptor>
   ```
 
-  For more details see [Scroll Behavior](../guide/advanced/scroll-behavior.md).
+  Para mais detalhes veja [scrollBehavior](../guide/advanced/scroll-behavior.md).
 
 ### parseQuery / stringifyQuery
 
-- type: `Function`
+- tipo: `Function`
 
-  Provide custom query string parse / stringify functions. Overrides the default.
+  Provê uma analize personalizada de um string de consulta / funções de stringify. Sobrescreve o padrão.
 
 ### fallback
 
-- type: `boolean`
+- tipo: `boolean`
 
-- default: `true`
+- valor padrão: `true`
 
-  Controls whether the router should fallback to `hash` mode when the browser does not support `history.pushState` but mode is set to `history`.
+  Verifica se o router deveria voltar ao modo `hash` quando o browser não oferece suporte ao `histoy.pushState` porém o modo está configurado como `history`.
 
-  Setting this to `false` essentially makes every `router-link` navigation a full page refresh in IE9. This is useful when the app is server-rendered and needs to work in IE9, because a hash mode URL does not work with SSR.
+  Configurar este para `false` essencialmente faz com que todas navegações de `router-link` façam um recarregamento de toda página no IE9. Isso é útil quando a aplicação é renderizada a partir do servidor e precisa funcionar no IE9, porque uma URL no modo hash não funciona com SSR.
 
-## Router Instance Properties
+## Propriedades da Instância do Router
 
 ### router.app
 
-- type: `Vue instance`
+- tipo: `Vue instance`
 
-  The root Vue instance the `router` was injected into.
+  A raiz da instância Vue onde `router` foi injetado como dependência.
 
 ### router.mode
 
-- type: `string`
+- tipo: `string`
 
-  The [mode](./#mode) the router is using.
+  O [modo](./#mode) que o router está usando.
 
 ### router.currentRoute
 
-- type: `Route`
+- tipo: `Route`
 
-  The current route represented as a [Route Object](#the-route-object).
+  A rota atual representada como um [objeto Route](#the-route-object).
 
-## Router Instance Methods
+## Metódos da Instância Router
 
 ### router.beforeEach
 
@@ -320,7 +330,8 @@ Since it's just a component, it works with `<transition>` and `<keep-alive>`. Wh
 
 ### router.afterEach
 
-Signatures:
+
+Assinaturas:
 
 ```js
 router.beforeEach((to, from, next) => {
@@ -334,9 +345,9 @@ router.beforeResolve((to, from, next) => {
 router.afterEach((to, from) => {})
 ```
 
-Add global navigation guards. See [Navigation Guards](../guide/advanced/navigation-guards.md) for more details.
+Adiciona guardas de navegação globais. Veja [Guardas de Navegação](../guide/advanced/navigation-guards.md) para mais detalhes.
 
-All three methods return a function that removes the registered guard/hook.
+Todos os três metodos retornam uma função que remove a guarda/ganho registada.
 
 ### router.push
 
@@ -348,7 +359,7 @@ All three methods return a function that removes the registered guard/hook.
 
 ### router.forward
 
-Signatures:
+Assinaturas:
 
 ```js
 router.push(location, onComplete?, onAbort?)
@@ -360,21 +371,21 @@ router.back()
 router.forward()
 ```
 
-Programmatically navigate to a new URL. See [Programmatic Navigation](../guide/essentials/navigation.md) for more details.
+Navega programaticamente para uma nova URL. Consulte [Navegação Programática](../guide/essentials/navigation.md) para mais detalhes.
+
+Essas funções só podem ser chamadas depois da instalação da extensão Router e passando ele para a raiz da instância Vue como mostrado no [dando inicío](../guide/README.md).
 
 ### router.getMatchedComponents
-
-Signature:
 
 ```js
 const matchedComponents: Array<Component> = router.getMatchedComponents(location?)
 ```
 
-Returns an Array of the components (definition/constructor, not instances) matched by the provided location or the current route. This is mostly used during server-side rendering to perform data prefetching.
+Returna um Array de componentes (definição/construtor, não instâncias) que correspondente ao local ou rota atual. Isso é muito usado durante a renderização no lado do servidor para performar a pre-requesição de dados.
 
 ### router.resolve
 
-Signature:
+Assinaturas:
 
 ```js
 const resolved: {
@@ -384,165 +395,162 @@ const resolved: {
 } = router.resolve(location, current?, append?)
 ```
 
-Reverse URL resolving. Given location in form same as used in `<router-link/>`.
+Resolve de forma reversa a URL. Fornece o local na mesma forma que é usada em `<router-link/>`.
 
-- `current` is the current Route by default (most of the time you don't need to change this)
-- `append` allows you to append the path to the `current` route (as with [`router-link`](#router-link-props))
+- `current` é a rota atual por padrão (na maioria das vezes você não precisa modifica-lo)
+- `àppend` permite que você anexe o caminho a rota `current` (como com [`router-link`](#router-link-props))
 
 ### router.addRoutes
 
-Signature:
+Assinaturas:
 
 ```js
 router.addRoutes(routes: Array<RouteConfig>)
 ```
 
-Dynamically add more routes to the router. The argument must be an Array using the same route config format with the `routes` constructor option.
+Adiciona dinamicamente mais rotas ao router. O argumento deve ser um Array usando o mesmo formato de configuração de rota com a opção construtora `routes`.
 
 ### router.onReady
 
-Signature:
+Assinaturas:
 
 ```js
 router.onReady(callback, [errorCallback])
 ```
 
-This method queues a callback to be called when the router has completed the initial navigation, which means it has resolved all async enter hooks and async components that are associated with the initial route.
+Este metódo agenta um callback a ser cahamdo quando o router tiver completado a navegação inicial, o que significa que ele tem como resolvidas todos os ganchos de entradas e componentes assincronos que estão associados a rota inicial.
 
-This is useful in server-side rendering to ensure consistent output on both the server and the client.
+Isso é útil na renderização do lado do servidor para assegurar uma saída consistente em ambos, o servidor e o cliente.
 
-The second argument `errorCallback` is only supported in 2.4+. It will be called when the initial route resolution runs into an error (e.g. failed to resolve an async component).
+O segundo argumento `errorCallback` é apenas suportado a partir da versão 2.4+. Será chamado quando ocorrer um erro na resolução da rota inicial (por exemplo: quando falhar em resolver um componente assincro).
 
 ### router.onError
 
-Signature:
+Assinatura:
 
 ```js
 router.onError(callback)
 ```
 
-Register a callback which will be called when an error is caught during a route navigation. Note for an error to be called, it must be one of the following scenarios:
+Regista um callback que será chamado quando um erro ocorrer durante uma navegação de rota. Note que para um erro ser chamado, deve ser em um dos seguintes senários:
 
-- The error is thrown synchronously inside a route guard function;
+- O erro é lançado sincronamente dentro de uma função de guarda de rota;
 
-- The error is caught and asynchronously handled by calling `next(err)` inside a route guard function;
+- O erro é capturado e assincronamente manipulado pela chamada de `next(error)` dentro de uma função de guarda de rota;
 
-- An error occurred when trying to resolve an async component that is required to render a route.
+- Um erro ocorrido quando se tenta resolver um componente assincrono que é necessário para renderizar uma rota.
 
-## The Route Object
+## O objeto Route
 
-A **route object** represents the state of the current active route. It contains parsed information of the current URL and the **route records** matched by the URL.
+Um **objeto route** representa o estado da rota ativa atual. Ele contém informações analizidas da URL atual e a **rota gravada** capturada pela URL.
 
-The route object is immutable. Every successful navigation will result in a fresh route object.
+O objeto de rota é imutável. Toda navegação bem-sucessida resultará em um novo objeto de rota.
 
-The route object can be found in multiple places:
+O objeto de rota pode ser encontrado em vários lugares:
 
-- Inside components as `this.$route`
-
-- Inside `$route` watcher callbacks
-
-- As the return value of calling `router.match(location)`
-
-- Inside navigation guards as the first two arguments:
+- Dentro do componentes como `this.$route`
+- Dentro do observador de callbacks do `$route`
+- Como o valor retornado pela chamada de `router.match(location)`
+- Dentro de guardas de navegação como os dois primeiros argumentos:
 
   ```js
   router.beforeEach((to, from, next) => {
-    // `to` and `from` are both route objects
+    // `to` e `from` são ambos objetos de rota
   })
   ```
 
-- Inside the `scrollBehavior` function as the first two arguments:
+- Dentro da função `scrollBehavior` como os dois primeiros argumentos:
 
   ```js
   const router = new VueRouter({
     scrollBehavior(to, from, savedPosition) {
-      // `to` and `from` are both route objects
+      // `to` e `from` são ambos objetos de rota
     }
   })
   ```
 
-### Route Object Properties
+### Propriedades do Objeto Route
 
 - **\$route.path**
 
-  - type: `string`
+  - tipo: `string`
 
-    A string that equals the path of the current route, always resolved as an absolute path. e.g. `"/foo/bar"`.
+    Um string que é igual ao caminho da rota atual, sempre resolvido como um caminho absoluto. Exemplo: `"/foo/bar"`.
 
 - **\$route.params**
 
-  - type: `Object`
+  - tipo: `Object`
 
-    An object that contains key/value pairs of dynamic segments and star segments. If there are no params the value will be an empty object.
+    Um objeto que contém pares chave/valor de segmentos dinâmicos e segmentos estrela. Se não existirem parametros o valor será um objeto vázio.
 
 - **\$route.query**
 
-  - type: `Object`
+  - tipo: `Object`
 
-    An object that contains key/value pairs of the query string. For example, for a path `/foo?user=1`, we get `$route.query.user == 1`. If there is no query the value will be an empty object.
+    Um objeto que contém pares chave/valor da string de consulta. Por exemplo, para um caminho `/foo?user=1`, nós receberemos `$route.query.user == 1`. Se não existir consulta o valor será um objeto vázio.
 
 - **\$route.hash**
 
-  - type: `string`
+  - tipo: `string`
 
-    The hash of the current route (with the `#`), if it has one. If no hash is present the value will be an empty string.
+    A hash da rota atual (com o `#`), se houver uma. Se nenhuma hash é apresentado o valor será uma string vázia.
 
 - **\$route.fullPath**
 
-  - type: `string`
+  - tipo: `string`
 
-    The full resolved URL including query and hash.
+    A URL completa resolvida incluindo a consulta e a hash.
 
 - **\$route.matched**
 
-  - type: `Array<RouteRecord>`
+  - tipo: `Array<RouteRecord>`
 
-  An Array containing **route records** for all nested path segments of the current route. Route records are the copies of the objects in the `routes` configuration Array (and in `children` Arrays):
+    Um Array contendo **route gravadas** para todos segmentos de caminhos aninhados da rota atual. Rota gravadas são as copias dos objetos no Array de configuração de `routes` (e em Arrays de `children`):
 
-  ```js
-  const router = new VueRouter({
-    routes: [
-      // the following object is a route record
-      {
-        path: '/foo',
-        component: Foo,
-        children: [
-          // this is also a route record
-          { path: 'bar', component: Bar }
-        ]
-      }
-    ]
-  })
+    ```js
+    const router = new VueRouter({
+      routes: [
+        // o objeto a seguir é uma rota gravada
+        {
+          path: '/foo',
+          component: Foo,
+          children: [
+            // isto também é uma rota gravada
+            { path: 'bar', component: Bar }
+          ]
+        }
+      ]
+    })
   ```
 
-  When the URL is `/foo/bar`, `$route.matched` will be an Array containing both objects (cloned), in parent to child order.
+  Quando a URL é `/foo/bar`, `$route.matched` será um Array contendo ambos objetos (clonado), na ordem de pai para filho.
 
 - **\$route.name**
 
-  The name of the current route, if it has one. (See [Named Routes](../guide/essentials/named-routes.md))
+  O nome da rota atual, se houver uma. (Veja [Rotas Nomedas](../guide/essentials/named-routes.md))
 
 - **\$route.redirectedFrom**
 
-  The name of the route being redirected from, if there were one. (See [Redirect and Alias](../guide/essentials/redirect-and-alias.md))
+  O nome da rota de onde foi redirecionada, se existiu uma. (Veja [Redirecionamento e Apelidos](../guide/essentials/redirect-and-alias.md))
 
-## Component Injections
+## Injeções de Componentes
 
-### Component Injected Properties
+### Propriedades do Componente Injetado
 
-These properties are injected into every child component by passing the router instance to the root instance as the `router` option.
-
-- **this.\$router**
-
-  The router instance.
+Essas propriedades são injetadas dentro de todo componente filho ao passar a instância de router para a instância raiz como a opção `router`.
 
 - **this.\$route**
 
-  The current active [Route](#the-route-object). This property is read-only and its properties are immutable, but it can be watched.
+  A instância de router.
 
-### Component Enabled Options
+- **this.\$route**
+
+  A atual [Rota](#the-route-object) ativa. Está propriedade é de somente leitura e suas propriedades são imutáveis, mas pode ser observadas.
+
+### Opções Habilita do Componentes
 
 - **beforeRouteEnter**
 - **beforeRouteUpdate**
 - **beforeRouteLeave**
 
-  See [In Component Guards](../guide/advanced/navigation-guards.md#in-component-guards).
+  Veja [Guardas dentro de Componentes](../guide/advanced/navigation-guards.md#in-component-guards).
